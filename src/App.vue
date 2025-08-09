@@ -1,25 +1,12 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue';
 import { useBudgetStore } from '@/stores/budget';
-import HomeView from '@/views/HomeView.vue';
-import StatsView from '@/views/StatsView.vue';
-import SettingsView from '@/views/SettingsView.vue';
-import HistoryView from '@/views/HistoryView.vue';
-import ExportDataView from '@/views/ExportDataView.vue';
-import { PhList, PhSun, PhMoon, PhHouse } from '@phosphor-icons/vue';
+import { PhList, PhSun, PhMoon } from '@phosphor-icons/vue';
+import { RouterLink, RouterView } from 'vue-router';
 
 const budgetStore = useBudgetStore();
 const isMenuOpen = ref(false);
 const isDarkMode = ref(true); // Default to dark mode
-
-const views = {
-  HomeView,
-  StatsView,
-  SettingsView,
-  HistoryView,
-  ExportDataView,
-};
-const currentView = ref('HomeView');
 
 const formatCurrency = (value) => {
   return new Intl.NumberFormat('en-US', {
@@ -34,8 +21,7 @@ const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
 
-const navigate = (viewName) => {
-  currentView.value = viewName;
+const closeMenu = () => {
   isMenuOpen.value = false;
 };
 
@@ -75,17 +61,17 @@ onMounted(() => {
     <aside class="side-menu" :class="{ 'is-open': isMenuOpen }">
       <nav>
         <ul>
-          <li><a href="#" @click.prevent="navigate('HomeView')">Inicio</a></li>
-          <li><a href="#" @click.prevent="navigate('StatsView')">Estadísticas</a></li>
-          <li><a href="#" @click.prevent="navigate('HistoryView')">Historia</a></li>
-          <li><a href="#" @click.prevent="navigate('ExportDataView')">Exportar Datos</a></li>
-          <li><a href="#" @click.prevent="navigate('SettingsView')">Configuración de Moneda</a></li>
+          <li><RouterLink to="/" @click="closeMenu">Inicio</RouterLink></li>
+          <li><RouterLink to="/stats" @click="closeMenu">Estadísticas</RouterLink></li>
+          <li><RouterLink to="/history" @click="closeMenu">Historia</RouterLink></li>
+          <li><RouterLink to="/export" @click="closeMenu">Exportar Datos</RouterLink></li>
+          <li><RouterLink to="/settings" @click="closeMenu">Configuración de Moneda</RouterLink></li>
         </ul>
       </nav>
     </aside>
 
     <main class="main-content">
-      <component :is="views[currentView]" />
+      <RouterView />
     </main>
   </div>
 </template>
@@ -168,6 +154,10 @@ onMounted(() => {
       font-weight: 500;
       &:hover {
         background-color: var(--background-color);
+      }
+      &.router-link-active {
+        background-color: var(--primary-color);
+        color: white;
       }
     }
   }

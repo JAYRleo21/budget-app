@@ -108,7 +108,7 @@ const downloadFile = (url, filename) => {
 .export-btn {
   padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 8px;
+  border-radius: .25rem;
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.2s, transform 0.2s;

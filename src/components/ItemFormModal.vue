@@ -131,7 +131,7 @@ const title = computed(() => `${props.item ? 'Editar' : 'Agregar'} ${props.itemT
       width: 100%;
       padding: 0.75rem;
       border: 1px solid var(--border-color);
-      border-radius: 8px;
+      border-radius: .25rem;
       background-color: var(--background-color);
       color: var(--text-color-primary);
       font-size: 1rem;
@@ -152,7 +152,7 @@ const title = computed(() => `${props.item ? 'Editar' : 'Agregar'} ${props.itemT
   overflow-y: auto;
   padding: 0.5rem;
   background-color: var(--background-color);
-  border-radius: 8px;
+  border-radius: .25rem;
 }
 
 .icon-option {

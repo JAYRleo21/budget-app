@@ -19,16 +19,22 @@ const budgetStore = useBudgetStore();
 
 const transactions = computed(() => budgetStore.transactions);
 
-const incomeTransactions = computed(() => 
-  transactions.value.filter(t => budgetStore.getItemByName(t.to)?.type === 'income')
+const accountDepositTransactions = computed(() =>
+  transactions.value.filter(t => {
+    const toItem = budgetStore.getItemByName(t.to);
+    return toItem?.type === 'account';
+  })
 );
 
-const expenseTransactions = computed(() => 
-  transactions.value.filter(t => budgetStore.getItemByName(t.to)?.type === 'expense')
+const expenseTransactions = computed(() =>
+  transactions.value.filter(t => {
+    const toItem = budgetStore.getItemByName(t.to);
+    return toItem?.type === 'expense';
+  })
 );
 
-const incomeStats = computed(() => {
-  const amounts = incomeTransactions.value.map(t => t.amount);
+const accountDepositStats = computed(() => {
+  const amounts = accountDepositTransactions.value.map(t => t.amount);
   if (amounts.length === 0) return { min: 0, max: 0, avg: 0 };
   const min = Math.min(...amounts);
   const max = Math.max(...amounts);
@@ -47,14 +53,17 @@ const expenseStats = computed(() => {
 
 const monthlyData = computed(() => {
   const months = Array.from({ length: 12 }, (_, i) => new Date(0, i).toLocaleString('default', { month: 'short' }));
-  const incomeByMonth = Array(12).fill(0);
+  const depositsByMonth = Array(12).fill(0);
   const expenseByMonth = Array(12).fill(0);
 
   transactions.value.forEach(t => {
     const month = new Date(t.date).getMonth();
-    if (budgetStore.getItemByName(t.to)?.type === 'income') {
-      incomeByMonth[month] += t.amount;
-    } else if (budgetStore.getItemByName(t.to)?.type === 'expense') {
+    const toItem = budgetStore.getItemByName(t.to);
+
+    console.log('toItem$', toItem);
+    if (toItem?.type === 'account') {
+      depositsByMonth[month] += t.amount;
+    } else if (toItem?.type === 'expense') {
       expenseByMonth[month] += t.amount;
     }
   });
@@ -63,13 +72,13 @@ const monthlyData = computed(() => {
     labels: months,
     datasets: [
       {
-        label: 'Income',
+        label: 'Ingresos',
         backgroundColor: '#4caf50',
         borderColor: '#4caf50',
-        data: incomeByMonth,
+        data: depositsByMonth,
       },
       {
-        label: 'Expenses',
+        label: 'Gastos',
         backgroundColor: '#f44336',
         borderColor: '#f44336',
         data: expenseByMonth,
@@ -93,25 +102,25 @@ const formatCurrency = (value) => {
 
 <template>
   <div class="history-view">
-    <h1>History & Stats</h1>
+    <h1>Historia</h1>
 
     <section class="stats-summary">
       <div class="stat-card">
-        <h2>Income Stats</h2>
-        <p><strong>Min:</strong> {{ formatCurrency(incomeStats.min) }}</p>
-        <p><strong>Max:</strong> {{ formatCurrency(incomeStats.max) }}</p>
-        <p><strong>Avg:</strong> {{ formatCurrency(incomeStats.avg) }}</p>
+        <h2>Ingresos</h2>
+        <p><strong>Min:</strong> {{ formatCurrency(accountDepositStats.min) }}</p>
+        <p><strong>Max:</strong> {{ formatCurrency(accountDepositStats.max) }}</p>
+        <p><strong>Prom:</strong> {{ formatCurrency(accountDepositStats.avg) }}</p>
       </div>
       <div class="stat-card">
-        <h2>Expense Stats</h2>
+        <h2>Gastos</h2>
         <p><strong>Min:</strong> {{ formatCurrency(expenseStats.min) }}</p>
         <p><strong>Max:</strong> {{ formatCurrency(expenseStats.max) }}</p>
-        <p><strong>Avg:</strong> {{ formatCurrency(expenseStats.avg) }}</p>
+        <p><strong>Prom:</strong> {{ formatCurrency(expenseStats.avg) }}</p>
       </div>
     </section>
 
-    <section class="chart-container">
-      <h2>Income vs Expenses per Month</h2>
+    <section class="chart-line-container">
+      <h2>Ingresos vs Gastos por mes</h2>
       <Line :data="monthlyData" :options="chartOptions" />
     </section>
   </div>
@@ -137,7 +146,7 @@ const formatCurrency = (value) => {
   padding: 1rem;
   background-color: var(--surface-color);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: .25rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 
   h2 {
@@ -149,12 +158,12 @@ const formatCurrency = (value) => {
   }
 }
 
-.chart-container {
+.chart-line-container {
   height: 400px;
   padding: 1rem;
   background-color: var(--surface-color);
   border: 1px solid var(--border-color);
-  border-radius: 8px;
+  border-radius: .25rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 </style>

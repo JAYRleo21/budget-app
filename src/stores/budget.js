@@ -27,9 +27,9 @@ export const useBudgetStore = defineStore('budget', () => {
 
   // Actions
   async function init() {
-    incomes.value = await incomesDB.getAll();
-    accounts.value = await accountsDB.getAll();
-    expenses.value = await expensesDB.getAll();
+    incomes.value = (await incomesDB.getAll()).map(i => ({ ...i, type: 'income' }));
+    accounts.value = (await accountsDB.getAll()).map(a => ({ ...a, type: 'account' }));
+    expenses.value = (await expensesDB.getAll()).map(e => ({ ...e, type: 'expense' }));
     transactions.value = await transactionsDB.getAll();
   }
 
@@ -154,5 +154,6 @@ export const useBudgetStore = defineStore('budget', () => {
     deleteItem,
     transfer,
     revertTransaction,
+    getItemByName,
   };
 });

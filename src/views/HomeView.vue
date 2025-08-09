@@ -140,45 +140,48 @@ const handleTransfer = (amount) => {
   <div class="home-view">
     <div class="sections-container">
       <section class="budget-section">
-        <h2 class="section-title">Ingresos</h2>
+        <h2 class="section-title">
+          <span>Ingresos</span>
+          <button class="add-button" @click="openFormModal('income')">
+            <ph-plus :size="16" weight="bold" />
+          </button>
+        </h2>
         <vue-draggable-next v-model="budgetStore.incomes" item-key="id" v-bind="incomesDragOptions" tag="ul" class="item-list" data-id="incomes" @end="onEnd">
           <BudgetItem v-for="item in budgetStore.incomes" :key="item.id" :item="item" :data-id="item.id" @edit="openFormModal('income', $event)" @delete="openDeleteModal('income', $event)" @show-history="openHistoryModal" />
           <div v-if="budgetStore.incomes.length === 0" class="empty-list-message">
             No hay ingresos
           </div>
         </vue-draggable-next>
-        <button class="add-button" @click="openFormModal('income')">
-          <ph-plus :size="16" weight="bold" />
-          <span>Agregar Ingreso</span>
-        </button>
       </section>
 
       <section class="budget-section">
-        <h2 class="section-title">Cuentas</h2>
+        <h2 class="section-title">
+          <span>Cuentas</span>
+          <button class="add-button" @click="openFormModal('account')">
+            <ph-plus :size="16" weight="bold" />
+          </button>
+        </h2>
         <vue-draggable-next v-model="budgetStore.accounts" item-key="id" v-bind="accountsDragOptions" tag="ul" class="item-list" data-id="accounts" @end="onEnd">
           <BudgetItem v-for="item in budgetStore.accounts" :key="item.id" :item="item" :data-id="item.id" @edit="openFormModal('account', $event)" @delete="openDeleteModal('account', $event)" @show-history="openHistoryModal" />
           <div v-if="budgetStore.accounts.length === 0" class="empty-list-message">
             No hay cuentas
           </div>
         </vue-draggable-next>
-        <button class="add-button" @click="openFormModal('account')">
-          <ph-plus :size="16" weight="bold" />
-          <span>Agregar Cuenta</span>
-        </button>
       </section>
 
       <section class="budget-section">
-        <h2 class="section-title">Gastos</h2>
+        <h2 class="section-title">
+          <span>Gastos</span>
+          <button class="add-button" @click="openFormModal('expense')">
+            <ph-plus :size="16" weight="bold" />
+          </button>
+        </h2>
         <vue-draggable-next v-model="budgetStore.expenses" item-key="id" v-bind="expensesDragOptions" tag="ul" class="item-list" data-id="expenses">
           <BudgetItem v-for="item in budgetStore.expenses" :key="item.id" :item="item" :data-id="item.id" @edit="openFormModal('expense', $event)" @delete="openDeleteModal('expense', $event)" @show-history="openHistoryModal" />
           <div v-if="budgetStore.expenses.length === 0" class="empty-list-message">
             No hay gastos
           </div>
         </vue-draggable-next>
-        <button class="add-button" @click="openFormModal('expense')">
-          <ph-plus :size="16" weight="bold" />
-          <span>Agregar Gasto</span>
-        </button>
       </section>
     </div>
 
@@ -204,7 +207,7 @@ const handleTransfer = (amount) => {
 
 .budget-section {
   background-color: var(--surface-color);
-  border-radius: 16px;
+  border-radius: .25rem;
   border: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
@@ -213,6 +216,9 @@ const handleTransfer = (amount) => {
 }
 
 .section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 0 1rem 1rem;
   margin: 0;
   font-size: 1.25rem;
@@ -250,16 +256,16 @@ const handleTransfer = (amount) => {
 }
 
 .add-button {
-  width: calc(100% - 2rem);
-  margin: 1rem auto 0;
-  padding: 0.75rem;
+  width: fit-content;
+  margin: 0;
+  padding: 0.5rem;
   background-color: var(--primary-color);
   color: white;
   border: none;
-  border-radius: 12px;
+  border-radius: 50%;
   cursor: pointer;
   font-weight: 600;
-  font-size: 1rem;
+  font-size: .875rem;
   transition: background-color 0.2s;
   display: flex;
   align-items: center;

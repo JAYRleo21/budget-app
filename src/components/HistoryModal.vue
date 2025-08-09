@@ -134,7 +134,7 @@ const revertTransaction = (transaction) => {
   color: white;
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border-radius: .25rem;
   cursor: pointer;
   transition: background-color 0.2s;
 
