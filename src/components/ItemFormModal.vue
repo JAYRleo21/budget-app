@@ -139,6 +139,7 @@ const title = computed(() => `${props.item ? 'Editar' : 'Agregar'} ${props.itemT
     .checkbox-label {
       display: flex;
       align-items: center;
+      justify-content: end;
       gap: 0.5rem;
     }
   }
@@ -159,8 +160,8 @@ const title = computed(() => `${props.item ? 'Editar' : 'Agregar'} ${props.itemT
   background-color: var(--surface-color);
   border: 1px solid var(--border-color);
   border-radius: 50%;
-  width: 48px;
-  height: 48px;
+  width: 2.75rem;
+  height: 2.75rem;
   display: flex;
   align-items: center;
   justify-content: center;

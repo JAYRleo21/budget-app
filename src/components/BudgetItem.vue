@@ -96,8 +96,8 @@ const itemIcon = computed(() => {
         <component :is="itemIcon" :size="32" :color="item.color || 'var(--text-color-primary)'" />
       </div>
       <div class="item-actions" :class="{ 'is-visible': showActions }">
-        <button @click.stop="onEdit" class="action-btn edit-btn"><ph-pencil :size="20" color="white" /></button>
-        <button @click.stop="onDelete" class="action-btn delete-btn"><ph-trash :size="20" color="white" /></button>
+        <button @click.stop="onEdit" class="action-btn edit-btn"><ph-pencil :size="20" /></button>
+        <button @click.stop="onDelete" class="action-btn delete-btn"><ph-trash :size="20" /></button>
       </div>
     </div>
     <span class="item-amount">{{ formatCurrency(item.amount) }}</span>
@@ -171,21 +171,14 @@ const itemIcon = computed(() => {
   left: 0;
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  background-color: rgba(0, 0, 0, 0.6);
   border-radius: 50%;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.2s;
-
   &.is-visible {
     opacity: 1;
     pointer-events: auto;
   }
-
   .action-btn {
     border: none;
     background: none;
@@ -194,12 +187,15 @@ const itemIcon = computed(() => {
     display: flex;
     align-items: center;
     justify-content: center;
-    
+    position: absolute;
+    right: -10px;
     &.edit-btn {
       color: #fbc02d;
+      top: -10px;
     }
     &.delete-btn {
       color: #e53935;
+      bottom: -10px;
     }
   }
 }

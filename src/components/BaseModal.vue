@@ -121,6 +121,9 @@ const closeModal = () => {
   background-color: var(--background-color);
   color: var(--text-color-primary);
   font-size: 1rem;
+  &[type="checkbox"] {
+    width: fit-content;
+  }
 }
 
 </style>
